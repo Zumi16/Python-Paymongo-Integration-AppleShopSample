@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Apple Products Store</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+    }
+    .jumbotron {
+      margin-bottom: 0;
+    }
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    .panel-footer {
+      position: relative;
+    }
+    .btn-primary {
+      margin-top: 10px;
+    }
+    .panel-primary {
+      border-color: #337ab7;
+    }
+    .panel-primary .panel-heading {
+      color: #fff;
+      background-color: #337ab7;
+      border-color: #337ab7;
+    }
+    .panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+    .panel-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel-body img {
+      max-height: 200px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid text-center">
+    <h1>Apple Products Store</h1>      
+    <p>High Quality Products for Everyday Use</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Deals</a></li>
+        <li><a href="#">Stores</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a href="{{ url_for('cart') }}"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">    
+  <div class="row">
+    {% for product in products %}
+    <div class="col-sm-4">
+      <div class="panel {{ product.panel_class }}">
+        <div class="panel-heading">{{ product.name }}</div>
+        <div class="panel-body">
+          <img src="{{ url_for('static', filename='images/' + product.image) }}" class="img-responsive" alt="{{ product.name }}">
+        </div>
+        <div class="panel-footer">
+          {{ product.description }} <br>
+          ₱{{ product.price }}
+          <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="btn btn-primary pull-right">Add to Cart</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div><br><br>
+
+<footer class="container-fluid text-center">
+  <p>Apple Products Store &copy; 2024</p>  
+  <form class="form-inline" method="post" action="{{ url_for('subscribe') }}">Get deals:
+    <input type="email" class="form-control" size="50" placeholder="Email Address" name="email">
+    <button type="submit" class="btn btn-danger">Sign Up</button>
+  </form>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+</footer>
+
+</body>
+</html>
